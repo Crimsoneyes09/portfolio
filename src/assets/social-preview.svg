@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#F6F2E9"/>
+  <rect x="64" y="52" width="46" height="46" rx="6" fill="#182923"/>
+  <text x="71" y="83" font-family="Georgia,serif" font-size="25" fill="#F6F2E9">AP</text>
+  <text x="130" y="83" font-family="Arial,sans-serif" font-size="25" fill="#182923">Full-stack developer / Metro Manila</text>
+  <path d="M64 132H1136" stroke="#CEC8BA"/>
+  <g font-family="Georgia,serif" font-size="100" letter-spacing="-3" fill="#182923">
+    <text x="64" y="266">Alexander</text>
+    <text x="64" y="372">Parayno.</text>
+  </g>
+  <text x="68" y="442" font-family="Arial,sans-serif" font-size="25" fill="#526059">Backend focus. Experience across the stack.</text>
+  <path d="M64 493H1136" stroke="#CEC8BA"/>
+  <text x="64" y="553" font-family="Arial,sans-serif" font-size="23" fill="#526059">Laravel · Go · Vue · Payroll, payments and mobile integration</text>
+  <text x="1136" y="555" text-anchor="end" font-family="Georgia,serif" font-size="36" fill="#075E54">↗</text>
+</svg>

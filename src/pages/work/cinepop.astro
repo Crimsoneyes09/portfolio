@@ -1,0 +1,27 @@
+---
+import { withBase } from '../../lib/site-path';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import ProjectVisual from '../../components/ProjectVisual.astro';
+import { projects } from '../../data/portfolio';
+const project = projects.find(project => project.slug === 'cinepop')!;
+---
+<SiteLayout title="CinePop — Protected mobile streaming | Alexander Parayno" description="Alexander’s mobile application contribution to CinePop: account access, protected playback, backend integration, and production support." path="/work/cinepop">
+  <div class="container case-study">
+    <a class="back-link" href={withBase('/#work')}><span aria-hidden="true">←</span> Back to selected work</a>
+    <header class="case-header">
+      <p class="eyebrow">02 / CinePop · Employer product</p><h1>{project.title}</h1>
+      <p class="case-intro reading-copy">CinePop is a mobile streaming app where users create an account, sign in and watch protected video.</p>
+      <dl class="case-facts"><div><dt>My role</dt><dd>{project.role}</dd></div><div><dt>Context</dt><dd>Go8 Technology<br />June–October 2025</dd></div><div><dt>Focus</dt><dd>Authentication · APIs · Protected playback</dd></div></dl>
+      <dl class="contribution-scope">
+        <div><dt>My work</dt><dd>Mobile application development, authentication and playback integration, REST APIs, and production troubleshooting.</dd></div>
+        <div><dt>Integrated with</dt><dd>Firebase Authentication, application data and protected-playback services.</dd></div>
+      </dl>
+      <div class="artifact-links"><a href="#cinepop-walkthrough">See the app integrations <span aria-hidden="true">↓</span></a></div>
+    </header>
+    <div class="case-content">
+      <section class="case-story" aria-labelledby="cinepop-integration"><p class="eyebrow">Mobile integration</p><h2 id="cinepop-integration">Connecting account access to playback.</h2><ProjectVisual /></section>
+      <section class="case-story" aria-labelledby="cinepop-constraints"><p class="eyebrow">Production support</p><h2 id="cinepop-constraints">Supporting the application in production.</h2><p class="reading-copy">I investigated playback and DRM resource-exhaustion issues. I also supported deployment and day-to-day operations on AWS EC2 and S3.</p></section>
+    </div>
+    <nav class="case-next" aria-label="Continue exploring"><div><p class="eyebrow">Next case study</p><a href={withBase('/work/primis')}>Primis / Business rules and payment boundaries <span aria-hidden="true">↗</span></a></div><a class="button button-primary" href={withBase('/projects#contact')}>Discuss a project <span aria-hidden="true">↗</span></a></nav>
+  </div>
+</SiteLayout>

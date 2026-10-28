@@ -1,0 +1,81 @@
+---
+import { rateForDate } from '../lib/effective-date';
+import dateRuleSource from '../lib/effective-date.ts?raw';
+import { versions } from '../data/rate-example';
+const dates = [
+  { value: '2026-05-31', label: '31 May 2026' },
+  { value: '2026-06-10', label: '10 June 2026' },
+  { value: '2026-06-15', label: '15 June 2026' },
+  { value: '2026-06-16', label: '16 June 2026' },
+  { value: '2026-06-20', label: '20 June 2026' },
+];
+const resolve = (date: string) => rateForDate(versions, date);
+const formatAmount = (hundredths: number) => (hundredths / 100).toFixed(2);
+const workedDays = dates.filter(date => ['2026-06-15', '2026-06-16'].includes(date.value)).map(date => ({
+  ...date, version: resolve(date.value)!, payableDays: 1,
+}));
+const totalDays = workedDays.reduce((total, day) => total + day.payableDays, 0);
+const totalHundredths = workedDays.reduce((total, day) => total + day.version.amountHundredths * day.payableDays, 0);
+const latestRateTotal = versions.at(-1)!.amountHundredths * totalDays;
+---
+<section class="compensation-demo dark" id="compensation-example" data-compensation aria-labelledby="demo-heading">
+  <header class="demo-heading"><p class="eyebrow">Independent example</p><h3 id="demo-heading">Which rate applies to this work date?</h3><p class="demo-caption">Fictional dates and amounts show how the rate changes between two workdays. Taxes and deductions are excluded.</p></header>
+  <ol class="rate-periods" aria-label="Fictional effective periods">
+    {versions.map(version => <li data-version={version.id} data-effective={version.effective} data-amount-hundredths={version.amountHundredths}><span class="eyebrow">Effective {version.effective === '2026-06-01' ? '1 June 2026' : '16 June 2026'}</span><strong>Rate {version.id} / {formatAmount(version.amountHundredths)}</strong><span>Fictional units per payable day · {version.label}</span></li>)}
+  </ol>
+  <div class="demo-interaction" data-controls hidden>
+    <div class="date-field"><label for="work-date">Work date</label><div class="select-wrap"><select id="work-date" name="work-date">{dates.map(date => <option value={date.value} selected={date.value === '2026-06-10'}>{date.label}</option>)}</select></div></div>
+    <div class="demo-result"><p class="eyebrow">Applicable version</p><p data-result role="status" aria-live="polite" aria-atomic="true"></p></div>
+  </div>
+  <div class="demo-fallback" data-fallback><p>Before 1 June 2026 → No rate effective yet</p><p>15 June 2026 → Rate A</p><p>16 June 2026 → Rate B</p></div>
+  <table class="evidence-table worked-table">
+    <caption>Two payable workdays · fictional units</caption>
+    <colgroup><col class="work-date-column" /><col class="rate-column" /><col class="amount-column" /><col class="days-column" /><col class="line-column" /></colgroup>
+    <thead><tr><th scope="col">Work date</th><th scope="col">Rate</th><th scope="col">Daily units</th><th scope="col">Days</th><th scope="col">Line units</th></tr></thead>
+    <tbody>{workedDays.map(day => <tr><th scope="row">{day.label}</th><td>{day.version.id}</td><td>{formatAmount(day.version.amountHundredths)}</td><td>{day.payableDays}</td><td>{formatAmount(day.version.amountHundredths * day.payableDays)}</td></tr>)}</tbody>
+    <tfoot><tr><th scope="row" colspan="3">Example total</th><td>{totalDays}</td><td>{formatAmount(totalHundredths)}</td></tr></tfoot>
+  </table>
+  <p class="demo-caption" data-counterexample>Using the latest rate for both days would give {formatAmount(latestRateTotal)} units instead of {formatAmount(totalHundredths)}.</p>
+  <div class="demo-rules">
+    <h3>How the rate is chosen</h3>
+    <p>Use the latest rate that had started by the work date. If no rate had started yet, show no amount.</p>
+    <details><summary>See all five example dates</summary><ul>{dates.map(date => {
+      const version = resolve(date.value);
+      return <li>{date.label} → {version ? `Rate ${version.id} / ${formatAmount(version.amountHundredths)} units` : 'No rate effective yet; no applicable amount'}</li>;
+    })}</ul></details>
+  </div>
+  <div class="saved-record" data-saved-record><span class="eyebrow">Static illustration / Saved rate</span><p><strong>10 June 2026 → Rate A</strong></p><p>Changing the preview date leaves this saved-rate illustration unchanged.</p></div>
+  <details class="code-sample" id="date-rule-source">
+    <summary>Read the date-rule code</summary>
+    <p>Independent portfolio code. This exact function powers both the worked rows and the interactive lookup above. Inputs are the fixed ISO dates and ordered versions in this example. The total adds whole hundredths before formatting for display.</p>
+    <pre><code>{dateRuleSource}</code></pre>
+    <p>The example checks the day before the first rate, both sides of the rate change, repeated selections and an unexpected selection. It also remains readable when scripts are blocked.</p>
+  </details>
+</section>
+<script>
+  import { rateForDate } from '../lib/effective-date';
+  document.querySelectorAll<HTMLElement>('[data-compensation]').forEach(root => {
+    const controls = root.querySelector<HTMLElement>('[data-controls]');
+    const select = root.querySelector<HTMLSelectElement>('select');
+    const result = root.querySelector<HTMLElement>('[data-result]');
+    const fallback = root.querySelector<HTMLElement>('[data-fallback]');
+    if (!controls || !select || !result || !fallback) return;
+    const allowedDates = new Map(Array.from(select.options, option => [option.value, option.text]));
+    const versions = Array.from(root.querySelectorAll<HTMLElement>('[data-version]'), node => ({ id: node.dataset.version!, effective: node.dataset.effective!, amountHundredths: Number(node.dataset.amountHundredths) }));
+    function update() {
+      const label = allowedDates.get(select!.value);
+      if (!label) {
+        result!.textContent = 'Choose one of the example dates.';
+        return;
+      }
+      const applicable = rateForDate(versions, select!.value);
+      result!.textContent = applicable
+        ? `${label} → Rate ${applicable.id} / ${(applicable.amountHundredths / 100).toFixed(2)} units per payable day. Latest version effective on this date.`
+        : `${label} → No rate effective yet. The first version starts on 1 June 2026.`;
+    }
+    update();
+    select.addEventListener('change', update);
+    fallback.hidden = true;
+    controls.hidden = false;
+  });
+</script>

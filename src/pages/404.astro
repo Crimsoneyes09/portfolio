@@ -1,0 +1,7 @@
+---
+import { withBase } from '../lib/site-path';
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+<SiteLayout title="Page not found | Alexander Parayno" description="This page could not be found. Return to Alexander Parayno’s portfolio and selected work." path="/404">
+  <section class="container section missing-page"><p class="eyebrow">404 / Page not found</p><h1>Page not found.</h1><p class="reading-copy">The address may have changed. You can find my work and contact details on the homepage.</p><div class="actions"><a class="button button-primary" href={withBase('/')}>Return home</a><a class="button button-secondary" href={withBase('/#work')}>Browse selected work</a></div></section>
+</SiteLayout>

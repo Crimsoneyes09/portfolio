@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+output/
+.wrangler/
+.env*
+.DS_Store
+npm-debug.log*
+AGENTS.md

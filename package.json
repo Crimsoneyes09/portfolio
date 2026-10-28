@@ -1,0 +1,26 @@
+{
+  "name": "alexander-parayno-portfolio",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "astro": "^7.4.0"
+  },
+  "private": true,
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.151.1"
+  }
+}

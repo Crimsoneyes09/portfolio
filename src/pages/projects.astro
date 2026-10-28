@@ -1,0 +1,53 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { profile, projects } from '../data/portfolio';
+import { withBase } from '../lib/site-path';
+const brief = 'What I’m building:\r\n\r\nWhat needs help:\r\n\r\nDesired outcome:\r\n\r\nPreferred timing:\r\n\r\n';
+const inquiry = `mailto:${profile.email}?subject=${encodeURIComponent('Project inquiry')}&body=${encodeURIComponent(brief)}`;
+---
+<SiteLayout title="Project help — Web & mobile development | Alexander Parayno" description="Development help for your web or mobile application: focused features, service integrations and fixes. Explore Alexander Parayno’s work and discuss your project." path="/projects">
+  <section class="hero hero-projects container" aria-labelledby="projects-heading">
+    <div class="hero-copy">
+      <p class="eyebrow">Alexander Parayno / Project work</p>
+      <h1 id="projects-heading">Have a feature <br />in mind?</h1>
+      <p class="intro reading-copy">I help teams build and improve web and mobile applications. A dashboard, a payment integration, a feature that needs fixing—let’s work out what your project needs.</p>
+      <div class="actions"><a class="button button-primary" href="#contact">Discuss your project <span aria-hidden="true">↓</span></a><a class="button button-secondary" href="#examples">See related work <span aria-hidden="true">↓</span></a></div>
+    </div>
+    <aside class="project-brief" aria-labelledby="project-focus">
+      <h2 id="project-focus">A good first message</h2>
+      <ol><li>What are you building?</li><li>What needs to change?</li><li>When do you need it?</li></ol>
+      <p>You can start with a few sentences.</p>
+      <a href="#contact">Project contact details <span aria-hidden="true">↓</span></a>
+    </aside>
+  </section>
+  <section class="capabilities-section" id="services" aria-labelledby="services-heading">
+    <div class="container section">
+      <div class="section-heading"><div><p class="eyebrow">01 / Project help</p><h2 id="services-heading">Where I can help.</h2></div></div>
+      <div class="service-list">
+        <article><h3>Features & workflows</h3><p class="reading-copy">Add a dashboard, form or admin workflow so people can view information and act on it in your application.</p><a href="#contact">Discuss a feature <span aria-hidden="true">↓</span></a></article>
+        <article><h3>Service integrations</h3><p class="reading-copy">Connect payments, sign-in or application data, including what happens when an update is delayed or a request needs another attempt.</p><a href="#contact">Discuss an integration <span aria-hidden="true">↓</span></a></article>
+        <article><h3>Improvements & fixes</h3><p class="reading-copy">Investigate an existing feature, identify the change it needs and check that change against the affected user flow.</p><a href="#contact">Discuss a fix <span aria-hidden="true">↓</span></a></article>
+      </div>
+    </div>
+  </section>
+  <section class="container section" id="examples" aria-labelledby="examples-heading">
+    <div class="section-heading"><div><p class="eyebrow">02 / Related work</p><h2 id="examples-heading">Projects I’ve worked on.</h2></div><p class="reading-copy muted">Professional work at Coral System Technologies and Go8 Technology.</p></div>
+    {projects.map((project, index) => <ProjectCard project={project} index={index} audience="projects" />)}
+  </section>
+  <section class="container section process-section" id="process" aria-labelledby="process-heading">
+    <div><p class="eyebrow">03 / Working together</p><h2 id="process-heading">From the first message <br />to the handover.</h2></div>
+    <ol class="process-list">
+      <li><h3>Understand the problem</h3><p class="reading-copy">We’ll discuss the application, who uses it, what needs to change and your timing.</p></li>
+      <li><h3>Agree on the scope</h3><p class="reading-copy">We’ll define what’s included, how we’ll check the result, and the cost and schedule before work starts.</p></li>
+      <li><h3>Build, review & hand over</h3><p class="reading-copy">I’ll implement the agreed change, share it for review and hand over the code with the notes needed to run or maintain it.</p></li>
+    </ol>
+  </section>
+  <section class="container section about-section" aria-labelledby="project-background">
+    <div><p class="eyebrow">The developer</p><h2 id="project-background">Hi, I’m Alexander.</h2></div>
+    <div><p class="reading-copy">I’m a full-stack developer based in Metro Manila. My experience includes payroll and payment features at Coral, CinePop’s mobile application at Go8, and Flutter dashboard work on Aurum Platform during my internship.</p><a class="project-link" href={withBase('/#about')}>More about my experience <span aria-hidden="true">↗</span></a></div>
+  </section>
+  <section class="contact-section" id="contact" aria-labelledby="project-contact">
+    <div class="container contact-inner"><div><p class="eyebrow">Get in touch</p><h2 id="project-contact">Tell me about your project.</h2><p class="reading-copy">Send a short brief and your preferred timing. We can discuss the scope and whether I’m a fit for the work.</p></div><div class="contact-actions"><a class="button button-primary" href={inquiry}>Email your project brief <span aria-hidden="true">↗</span></a><p class="contact-address">{profile.email}</p><p class="muted">{profile.location}</p></div></div>
+  </section>
+</SiteLayout>

@@ -1,0 +1,48 @@
+---
+import { withBase } from '../lib/site-path';
+import '../styles/global.css';
+import { profile } from '../data/portfolio';
+interface Props { title: string; description: string; path: string; }
+const { title, description, path } = Astro.props;
+const canonical = Astro.site && new URL(withBase(path), Astro.site);
+const projectPage = path === '/projects';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#F6F2E9" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="en_PH" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {canonical && <>
+      <link rel="canonical" href={canonical} />
+      <meta property="og:url" content={canonical} />
+      <meta property="og:image" content={new URL(withBase('/social-preview.png'), Astro.site)} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="Alexander Parayno — Full-stack developer with a backend focus. Payroll, payments and mobile integration." />
+    </>}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header container">
+      <a class="brand" href={withBase('/')}><span class="brand-mark">AP</span> <span>{profile.name}</span></a>
+      <nav class="site-nav" aria-label="Main navigation">
+        {projectPage ? <>
+          <a href="#services">Project help</a><a href="#examples">Related work</a><a href="#process">Process</a><a href={withBase('/')}>Full-time portfolio</a><a class="nav-contact" href="#contact">Contact <span aria-hidden="true">↓</span></a>
+        </> : <>
+          <a href={withBase('/#work')}>Selected work</a><a href={withBase('/#capabilities')}>Capabilities</a><a href={withBase('/#about')}>Experience</a><a href={withBase('/resume')}>Résumé</a><a href={withBase('/projects')}>Project help</a><a class="nav-contact" href={withBase('/#contact')}>Contact <span aria-hidden="true">↗</span></a>
+        </>}
+      </nav>
+    </header>
+    <main id="main" tabindex="-1"><slot /></main>
+    <footer class="site-footer container"><p>{profile.name}<br /><span class="muted">{profile.location}</span></p><a href={`mailto:${profile.email}`}>Send an email <span aria-hidden="true">↗</span></a><a href={withBase('/#work')}>Selected work <span aria-hidden="true">↑</span></a></footer>
+  </body>
+</html>

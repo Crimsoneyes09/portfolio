@@ -1,0 +1,24 @@
+---
+import { withBase } from '../lib/site-path';
+import type { Project } from '../data/portfolio';
+import ProjectPreview from './ProjectPreview.astro';
+interface Props { project: Project; index: number; audience?: 'employment' | 'projects'; }
+const { project, index, audience = 'employment' } = Astro.props;
+const isPrimis = project.slug === 'primis';
+const artifactLabel = isPrimis
+  ? (audience === 'projects' ? 'See how rate changes work' : 'Try the rate example')
+  : 'See the app integrations';
+---
+<article class:list={['project-row', { 'project-row-reverse': !isPrimis }]}>
+  <div class="project-intro">
+    <p class="eyebrow"><span class="work-number">0{index + 1}</span>{isPrimis ? 'Primis' : 'CinePop'}</p>
+    <h3>{audience === 'projects' ? project.clientTitle : project.title}</h3>
+    <p class="reading-copy">{audience === 'projects' ? project.clientSummary : project.summary}</p>
+    <p class="project-role"><strong>{project.role}</strong><span>{project.context}</span></p>
+    <a class="project-link" href={withBase(`/work/${project.slug}`)}>Explore the {isPrimis ? 'Primis' : 'CinePop'} case study <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="project-detail">
+    <ProjectPreview slug={project.slug} />
+    <a class="project-artifact" href={withBase(isPrimis ? '/work/primis#compensation-example' : '/work/cinepop#cinepop-walkthrough')}>{artifactLabel} <span aria-hidden="true">↗</span></a>
+  </div>
+</article>

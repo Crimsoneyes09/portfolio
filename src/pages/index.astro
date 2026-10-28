@@ -1,0 +1,45 @@
+---
+import { withBase } from '../lib/site-path';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { profile, projects } from '../data/portfolio';
+---
+<SiteLayout title="Alexander Parayno — Full-stack Developer | Laravel, Go & Vue" description="Full-stack developer with a backend focus. Explore Alexander Parayno’s payroll, payment and mobile integration work, code example and professional résumé." path="/">
+  <section class="hero hero-profile container" aria-labelledby="hero-heading">
+    <div class="hero-identity">
+      <p class="eyebrow">Full-stack developer / Metro Manila</p>
+      <h1 id="hero-heading">Alexander <span>Parayno.</span></h1>
+      <p class="identity-caption">Payroll, payments &amp; mobile applications</p>
+    </div>
+    <div class="hero-copy">
+      <p class="hero-role">Backend focus.<br />Experience across the stack.</p>
+      <p class="intro reading-copy">I’m a full-stack developer working with Laravel, Go and Vue. I’ve built payroll and payment features for Primis, led mobile development for CinePop, and worked on Flutter dashboards during my internship.</p>
+      <div class="actions"><a class="button button-primary" href="#work">Explore selected work <span aria-hidden="true">↓</span></a><a class="button button-secondary" href={withBase('/resume')}>View résumé <span aria-hidden="true">↗</span></a></div>
+      <a class="hero-contact" href="#contact">Discuss a role <span aria-hidden="true">↗</span></a>
+    </div>
+  </section>
+  <section class="container section work-section" id="work" aria-labelledby="work-heading">
+    <div class="section-heading"><div><p class="eyebrow">01 / Selected work</p><h2 id="work-heading">Two products. My part in each.</h2></div><p class="reading-copy muted">Professional work at Coral System Technologies and Go8 Technology.</p></div>
+    {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+  </section>
+  <section class="container section skills-section" id="capabilities" aria-labelledby="capabilities-heading">
+    <div class="section-heading"><div><p class="eyebrow">02 / Tools &amp; experience</p><h2 id="capabilities-heading">What I work with.</h2></div></div>
+    <dl class="skills-list">
+      <div><dt>Backend &amp; business rules</dt><dd>PHP / Laravel · Go · REST APIs</dd><dd><a href={withBase('/work/primis#compensation')}>Payroll history <span aria-hidden="true">↗</span></a><br /><a href={withBase('/work/primis#payments')}>Payment collection <span aria-hidden="true">↗</span></a></dd></div>
+      <div><dt>Data &amp; interfaces</dt><dd>PostgreSQL / SQL · Vue / Inertia</dd><dd><a href={withBase('/work/primis#attendance')}>Attendance corrections <span aria-hidden="true">↗</span></a></dd></div>
+      <div><dt>Mobile applications</dt><dd>Flutter · Firebase Authentication · DRM integration</dd><dd><a href="#experience-internship">Aurum internship <span aria-hidden="true">↓</span></a><br /><a href={withBase('/work/cinepop#cinepop-walkthrough')}>CinePop integrations <span aria-hidden="true">↗</span></a></dd></div>
+      <div><dt>Deployment support</dt><dd>AWS EC2 / S3</dd><dd><a href={withBase('/work/cinepop#cinepop-constraints')}>Application support <span aria-hidden="true">↗</span></a></dd></div>
+    </dl>
+  </section>
+  <section class="container section about-section" id="about" aria-labelledby="about-heading">
+    <div><p class="eyebrow">03 / Experience</p><h2 id="about-heading">Where I’ve worked.</h2><p class="reading-copy about-intro">From Flutter dashboards during my internship to mobile streaming and business software.</p><a class="project-link" href={withBase('/resume')}>View my résumé <span aria-hidden="true">↗</span></a></div>
+    <div class="experience-list">
+      <article id="experience-coral"><p class="eyebrow">December 2025 onward</p><h3>Coral System Technologies</h3><p class="experience-role">Software Developer · Full-stack</p><p class="reading-copy">I build payroll, attendance, employee self-service and subscription features for Primis, including its payment collection integration.</p></article>
+      <article id="experience-go8"><p class="eyebrow">June–October 2025</p><h3>Go8 Technology</h3><p class="experience-role">Software Developer · Full-stack</p><p class="reading-copy">I led CinePop’s mobile development, from sign-in to protected video playback, and supported its backend integration and production operations.</p></article>
+      <article id="experience-internship"><p class="eyebrow">February–May 2025</p><h3>Go8 Technology</h3><p class="experience-role">Mobile Development Intern · OJT</p><p class="reading-copy">I contributed to <a href="https://play.google.com/store/apps/details?id=com.aurum.platform&amp;hl=en">Aurum Platform on Google Play</a>, a Flutter app. I built dashboard and asset views for tracking portfolio profit and loss, and connected them to market-price updates from APIs.</p></article>
+    </div>
+  </section>
+  <section class="contact-section" id="contact" aria-labelledby="contact-heading">
+    <div class="container contact-inner"><div><p class="eyebrow">Get in touch</p><h2 id="contact-heading">Have a role in mind?</h2><p class="reading-copy">Tell me about your team, the product and the work you need help with.</p><a class="project-link" href={withBase('/projects')}>Looking for project help? <span aria-hidden="true">↗</span></a></div><div class="contact-actions"><a class="button button-primary" href={`mailto:${profile.email}`}>Email Alexander <span aria-hidden="true">↗</span></a><p class="contact-address">{profile.email}</p><p class="muted">{profile.location}</p></div></div>
+  </section>
+</SiteLayout>

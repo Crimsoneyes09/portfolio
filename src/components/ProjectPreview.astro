@@ -1,0 +1,22 @@
+---
+import type { Project } from '../data/portfolio';
+import { versions } from '../data/rate-example';
+interface Props { slug: Project['slug']; }
+const { slug } = Astro.props;
+---
+{slug === 'primis' ? <figure class="project-preview rate-preview">
+  <div class="preview-label"><span>Compensation history</span><span>June 2026</span></div>
+  <ol class="rate-ledger" role="list">
+    {versions.map(version => <li><div><span class="eyebrow">Rate {version.id}</span><strong>{(version.amountHundredths / 100).toFixed(2)}</strong></div><p>{version.label}</p></li>)}
+  </ol>
+  <p class="preview-takeaway">The work date determines the rate.</p>
+  <figcaption>Rate-change illustration · fictional units</figcaption>
+</figure> : <figure class="project-preview stream-preview">
+  <div class="preview-label"><span>CinePop</span><span>Application flow</span></div>
+  <ol class="stream-sequence" role="list">
+    <li><span class="sequence-number" aria-hidden="true">01</span><strong>Account access</strong><span>Registration & sign-in</span></li>
+    <li><span class="sequence-number" aria-hidden="true">02</span><strong>Application data</strong><span>REST API integration</span></li>
+    <li><span class="sequence-number" aria-hidden="true">03</span><strong>Protected playback</strong><span>Playback & recording protection</span></li>
+  </ol>
+  <figcaption>Illustration of my application integration work</figcaption>
+</figure>}

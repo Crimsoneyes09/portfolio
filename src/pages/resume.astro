@@ -1,0 +1,56 @@
+---
+import { withBase } from '../lib/site-path';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { profile } from '../data/portfolio';
+---
+<SiteLayout title="Alexander Parayno — Professional Résumé" description="Selected full-stack development experience: Laravel, Go, PostgreSQL, Vue, payment integration and mobile application development." path="/resume">
+  <div class="container resume-page">
+    <div class="resume-actions"><a class="back-link" href={withBase('/')}>← Back to portfolio</a><p>Use your browser’s Print command to print or save this résumé as a PDF.</p></div>
+    <article class="resume-sheet" aria-labelledby="resume-heading">
+      <header class="resume-header">
+        <p class="eyebrow">Professional résumé / Selected experience</p>
+        <h1 id="resume-heading">{profile.name}</h1>
+        <p class="resume-role">Full-stack Software Developer · Backend focus</p>
+        <p class="reading-copy">{profile.location} · <a href={`mailto:${profile.email}`}>{profile.email}</a></p>
+        <p class="reading-copy resume-summary">Full-stack developer building payroll, payment and mobile applications, from business rules and APIs to user interfaces, regression testing and production troubleshooting.</p>
+      </header>
+      <section aria-labelledby="resume-experience">
+        <h2 id="resume-experience">Selected professional experience</h2>
+        <div class="resume-job">
+          <div class="resume-job-heading"><h3>Coral System Technologies</h3><p>December 2025 onward</p></div>
+          <p class="experience-role">Software Developer · Full-stack</p>
+          <ul>
+            <li>Built date-based payroll rates, compensation change history and saved rate references, with validation for wage-table updates.</li>
+            <li>Built Laravel APIs, PostgreSQL data workflows and Vue/Inertia interfaces for HRIS functions, including payroll and attendance corrections.</li>
+            <li>Implemented a separate Go/PayMongo collection service with persistent state, verified callbacks, checkout recovery and reconciliation.</li>
+            <li>Wrote backend/frontend regression tests and deployment/recovery documentation; troubleshot application, database and business-logic issues.</li>
+          </ul>
+          <a href={withBase('/work/primis')}>Primis case study</a>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-heading"><h3>Go8 Technology</h3><p>June–October 2025</p></div>
+          <p class="experience-role">Software Developer · Full-stack</p>
+          <ul>
+            <li>Led CinePop mobile application development across registration, login, protected playback and backend integration.</li>
+            <li>Developed REST APIs and integrated Firebase Authentication, Google login, email/mobile registration and OTP verification.</li>
+            <li>Implemented DRM and recording controls; worked on playback resource-exhaustion issues and supported AWS EC2/S3 operations.</li>
+            <li>Participated in code reviews and Agile development.</li>
+          </ul>
+          <a href={withBase('/work/cinepop')}>CinePop case study</a>
+        </div>
+        <div class="resume-job">
+          <div class="resume-job-heading"><h3>Go8 Technology</h3><p>February–May 2025</p></div>
+          <p class="experience-role">Mobile Development Intern · OJT</p>
+          <ul>
+            <li>Contributed dashboard and asset views to <a href="https://play.google.com/store/apps/details?id=com.aurum.platform&amp;hl=en">Aurum Platform on Google Play</a>, a Flutter app, for tracking portfolio profit and loss.</li>
+            <li>Integrated API-driven market price updates and prepared frontend components for dynamic database integration.</li>
+          </ul>
+        </div>
+      </section>
+      <section aria-labelledby="resume-skills">
+        <h2 id="resume-skills">Relevant technologies</h2>
+        <p>PHP / Laravel · Go · REST APIs · PostgreSQL / SQL · JavaScript · Vue / Inertia · Flutter · Firebase Authentication · AWS EC2 / S3</p>
+      </section>
+    </article>
+  </div>
+</SiteLayout>

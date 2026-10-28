@@ -1,0 +1,71 @@
+---
+import { withBase } from '../../lib/site-path';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import CompensationDemo from '../../components/CompensationDemo.astro';
+import { projects } from '../../data/portfolio';
+const project = projects.find(project => project.slug === 'primis')!;
+---
+<SiteLayout title="Primis — Payroll & payment contributions | Alexander Parayno" description="How I built date-based payroll rates, attendance corrections and payment collection features for Primis." path="/work/primis">
+  <div class="container case-study">
+    <a class="back-link" href={withBase('/#work')}><span aria-hidden="true">←</span> Back to selected work</a>
+    <header class="case-header">
+      <p class="eyebrow">01 / Primis · Employer product</p><h1>{project.title}</h1>
+      <p class="case-intro reading-copy">Primis is an HR and payroll platform for Philippine organizations.</p>
+      <dl class="case-facts"><div><dt>My role</dt><dd>{project.role}</dd></div><div><dt>Context</dt><dd>Coral System Technologies<br />December 2025 onward</dd></div><div><dt>Tools used</dt><dd>Laravel · Vue/Inertia · PostgreSQL · Go</dd></div></dl>
+      <dl class="contribution-scope">
+        <div><dt>My work</dt><dd>Payroll rate history, attendance correction workflows and the Go payment collection service.</dd></div>
+        <div><dt>Integrated with</dt><dd>Existing HRIS and invoicing workflows, plus PayMongo for payment outcomes.</dd></div>
+      </dl>
+      <div class="artifact-links"><a href="#compensation-example">Try the rate example <span aria-hidden="true">↓</span></a><a href="https://primis.coralsystem.net/">PRIMIS product website <span aria-hidden="true">↗</span></a></div>
+    </header>
+    <nav class="story-nav" aria-label="Primis decisions"><a href="#compensation">01 / Effective dates</a><a href="#attendance">02 / Corrections</a><a href="#payments">03 / Payment boundaries</a></nav>
+    <div class="case-content">
+      <section class="case-story" id="compensation" aria-labelledby="compensation-heading">
+        <p class="eyebrow">01 / Payroll rates</p><h2 id="compensation-heading">Preserving the rate used for earlier work.</h2>
+        <p class="reading-copy">A pay change halfway through a period should not change the rate for work already done. I built the date-based lookup and history that let payroll use the right rate for each work date.</p>
+        <p class="reading-copy">Each approved payroll record keeps a reference to the rate it used. Compensation changes are added to the history, so later updates do not silently replace those earlier inputs.</p>
+        <CompensationDemo />
+        <div class="decision-note"><h3>Why keep the extra history?</h3><p class="reading-copy">It adds records to maintain, but makes an earlier payroll calculation traceable. I also kept related compensation changes together and serialized wage-table updates so concurrent edits could not both pass an outdated overlap check.</p></div>
+      </section>
+      <section class="case-story" id="attendance" aria-labelledby="attendance-heading">
+        <p class="eyebrow">02 / Attendance corrections</p><h2 id="attendance-heading">Reviewing attendance without rewriting history.</h2>
+        <p class="reading-copy">An attendance request can change while someone is reviewing it. A cancelled request should remain in history without being treated as an active request.</p>
+        <p class="reading-copy">I worked on request history, checks against the latest attendance state, and clearer dashboard labels for records that still need review. I also added safeguards around no-show validation and records already used in payroll.</p>
+        <figure class="attendance-figure"><div class="record-grid">
+          <div><p class="eyebrow">Request history</p><h3>Keep the decision.</h3><p>Fictional request R-17 is cancelled. Its submission and decision remain in history.</p></div>
+          <div><p class="eyebrow">Current attendance</p><h3>Review the active state.</h3><p>Check the latest attendance and request status before applying a correction.</p></div>
+          <div class="protected-record"><p class="eyebrow">Payroll-covered record</p><h3>Respect the boundary.</h3><p>A financial correction goes through an adjustment rather than silently rewriting covered history.</p></div>
+        </div><figcaption>Original illustration of three record types, using fictional request R-17.</figcaption></figure>
+        <div class="decision-note"><h3>What if the reviewer opened it earlier?</h3><p class="reading-copy">If R-17 was cancelled after the reviewer opened it, the correction must check its status again. If the attendance has already been used in payroll, the financial correction goes through an adjustment.</p></div>
+      </section>
+      <section class="case-story" id="payments" aria-labelledby="payments-heading">
+        <p class="eyebrow">03 / Payment collection</p><h2 id="payments-heading">Collecting payments without changing the invoice.</h2>
+        <p class="reading-copy">Checkout links can expire, requests can repeat and payment confirmations can arrive late. I built a separate Go service to handle collection while Laravel keeps control of invoice terms and amounts.</p>
+        <p class="reading-copy">The service stores payment state, verifies PayMongo callbacks, supports checkout recovery and checks unresolved payments against the provider. I also wrote deployment and recovery instructions for operating it.</p>
+        <figure class="payment-figure"><div class="visual dark">
+          <p class="eyebrow">Ownership boundaries</p><dl class="payment-lanes"><div><dt>Laravel invoice</dt><dd>Sets the invoice terms and amount.</dd></div><div><dt>Go collection</dt><dd>Collects that amount and tracks payment attempts and repeated requests.</dd></div><div><dt>PayMongo</dt><dd>Reports the payment outcome for verification.</dd></div></dl>
+          <div class="return-path"><p class="eyebrow">Verified return path</p><p>Verified payment outcome <span aria-hidden="true">→</span> collection state <span aria-hidden="true">→</span> signed settlement update to Laravel</p></div>
+        </div><figcaption>Simplified flow: Laravel sets the amount; the collection service reports the verified payment outcome.</figcaption></figure>
+        <details class="technical-details" id="payment-details"><summary>Read more: payment retries and safeguards</summary>
+        <div class="event-trace"><p class="eyebrow">One fictional request / C-01</p><ol>
+          <li><strong>Request recorded; outcome unresolved.</strong><span>The authorized collection request is stored. A provider outcome is not yet verified.</span></li>
+          <li><strong>The same request arrives again.</strong><span>The stored idempotency response handles the replay. Repeating the request does not establish payment success.</span></li>
+          <li><strong>A delayed provider fact arrives.</strong><span>It is verified before collection state and settlement follow the provider outcome.</span></li>
+          <li><strong>Settlement delivery needs another attempt.</strong><span>Signed settlement-event delivery can be retried independently. Reconciliation handles outcomes that remain unresolved.</span></li>
+        </ol><p class="figure-note">Illustrated retry sequence using fictional request C-01.</p></div>
+        <table class="evidence-table invariant-table">
+          <caption>Payment safeguards</caption>
+          <thead><tr><th scope="col">Boundary</th><th scope="col">What should remain true</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Invoice authority</th><td>Invoicing owns terms and amounts. Collection uses the authorized amount.</td></tr>
+            <tr><th scope="row">Verified outcomes</th><td>Unverified provider facts cannot be treated as verified payment outcomes.</td></tr>
+            <tr><th scope="row">Independent retries</th><td>A repeated collection request and a settlement-event delivery retry have different responsibilities.</td></tr>
+            <tr><th scope="row">Unresolved outcomes</th><td>Unresolved does not mean failed. Reconciliation must establish the outcome.</td></tr>
+          </tbody>
+        </table>
+        </details>
+      </section>
+    </div>
+    <nav class="case-next" aria-label="Continue exploring"><div><p class="eyebrow">Next case study</p><a href={withBase('/work/cinepop')}>CinePop / Mobile application integration <span aria-hidden="true">↗</span></a></div><a class="button button-primary" href={withBase('/projects#contact')}>Discuss a project <span aria-hidden="true">↗</span></a></nav>
+  </div>
+</SiteLayout>
