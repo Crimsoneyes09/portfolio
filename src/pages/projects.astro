@@ -23,7 +23,7 @@ const inquiry = `mailto:${profile.email}?subject=${encodeURIComponent('Project i
   </section>
   <section class="capabilities-section" id="services" aria-labelledby="services-heading">
     <div class="container section">
-      <div class="section-heading"><div><p class="eyebrow">01 / Project help</p><h2 id="services-heading">Where I can help.</h2></div></div>
+      <div class="section-heading"><div><p class="eyebrow">01 / Project help</p><h2 id="services-heading">Where I can help.</h2><p class="reading-copy about-intro">Laravel / PHP · REST APIs · Webhooks · SQL · AWS EC2 / S3</p></div><p class="reading-copy muted">I take on small one-off jobs, ongoing maintenance and larger feature projects. Pricing depends on scope; I’ll review the requirements before providing a quote.</p></div>
       <div class="service-list">
         <article><h3>Features & workflows</h3><p class="reading-copy">Add a dashboard, form or admin workflow so people can view information and act on it in your application.</p><a href="#contact">Discuss a feature <span aria-hidden="true">↓</span></a></article>
         <article><h3>Service integrations</h3><p class="reading-copy">Connect payments, sign-in or application data, including what happens when an update is delayed or a request needs another attempt.</p><a href="#contact">Discuss an integration <span aria-hidden="true">↓</span></a></article>
@@ -33,10 +33,11 @@ const inquiry = `mailto:${profile.email}?subject=${encodeURIComponent('Project i
   </section>
   <section class="container section" id="examples" aria-labelledby="examples-heading">
     <div class="section-heading"><div><p class="eyebrow">02 / Related work</p><h2 id="examples-heading">Projects I’ve worked on.</h2></div><p class="reading-copy muted">Professional work at Coral System Technologies and Go8 Technology.</p></div>
+    <p class="reading-copy">Explore the <a href={withBase('/work/primis#compensation-example')}>interactive payroll demo</a>, its <a href={withBase('/work/primis#date-rule-source')}>independent code sample</a> and the <a href={withBase('/work/primis#payments')}>payment flow diagram</a>. These portfolio examples explain the problems and my approach using fictional data and simplified flows, without sharing proprietary source code.</p>
     {projects.map((project, index) => <ProjectCard project={project} index={index} audience="projects" />)}
   </section>
   <section class="container section process-section" id="process" aria-labelledby="process-heading">
-    <div><p class="eyebrow">03 / Working together</p><h2 id="process-heading">From the first message <br />to the handover.</h2></div>
+    <div><p class="eyebrow">03 / Working together</p><h2 id="process-heading">From the first message <br />to the handover.</h2><p class="reading-copy about-intro">Start with a small, paid task: a bug fix, API integration or feature improvement. We’ll agree on a clear scope and review the result before you decide whether to continue with more work.</p></div>
     <ol class="process-list">
       <li><h3>Understand the problem</h3><p class="reading-copy">We’ll discuss the application, who uses it, what needs to change and your timing.</p></li>
       <li><h3>Agree on the scope</h3><p class="reading-copy">We’ll define what’s included, how we’ll check the result, and the cost and schedule before work starts.</p></li>
